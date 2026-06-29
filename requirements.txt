@@ -1,0 +1,27 @@
+# TTS System Requirements
+# Python 3.10
+
+# PyTorch with MPS support (Apple Silicon)
+torch>=2.0.0
+torchaudio>=2.0.0
+
+# TTS Library
+TTS>=0.20.0
+
+# Audio Processing
+librosa>=0.10.0
+soundfile>=0.12.0
+soxr>=0.3.0
+
+# Evaluation Metrics
+pesq>=0.0.4
+pystoi>=0.4.0
+
+# Utilities
+numpy>=1.22.0
+scipy>=1.10.0
+pandas>=1.5.0
+matplotlib>=3.7.0
+tqdm>=4.65.0
+tensorboardX>=2.6.0
+pyyaml>=6.0

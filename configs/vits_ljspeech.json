@@ -1,0 +1,108 @@
+{
+    "model": "vits",
+    "run_name": "vits_ljspeech",
+    "run_description": "VITS model fine-tuned on LJSpeech dataset",
+
+    "audio": {
+        "fft_size": 1024,
+        "sample_rate": 22050,
+        "win_length": 1024,
+        "hop_length": 256,
+        "num_mels": 80,
+        "mel_fmin": 0,
+        "mel_fmax": null
+    },
+
+    "batch_size": 16,
+    "eval_batch_size": 4,
+    "num_loader_workers": 4,
+    "num_eval_loader_workers": 2,
+
+    "run_eval": true,
+    "test_delay_epochs": 2,
+    "epochs": 100,
+    "text_cleaner": "english_cleaners",
+    "use_phonemes": true,
+    "phoneme_language": "en-us",
+    "phonemizer": "gruut",
+
+    "learning_rate": 0.0002,
+    "lr_scheduler": "NoamLR",
+    "lr_scheduler_params": {
+        "warmup_steps": 4000
+    },
+
+    "optimizer": "AdamW",
+    "optimizer_params": {
+        "betas": [0.8, 0.99],
+        "eps": 0.000000001,
+        "weight_decay": 0.01
+    },
+
+    "datasets": [
+        {
+            "name": "ljspeech",
+            "path": "/Users/misuzu/General Workspace/jjjvoiceprocess/data/LJSpeech-1.1",
+            "meta_file_train": "metadata.csv",
+            "meta_file_val": "metadata.csv",
+            "formatter": "ljspeech",
+            "language": "en"
+        }
+    ],
+
+    "output_path": "/Users/misuzu/General Workspace/jjjvoiceprocess/models",
+
+    "save_step": 1000,
+    "print_step": 50,
+    "log_model_step": 1000,
+    "save_n_checkpoints": 5,
+    "save_checkpoints": true,
+
+    "target_loss": "loss_0",
+
+    "test_sentences": [
+        "The quick brown fox jumps over the lazy dog.",
+        "Machine learning is transforming the way we interact with technology.",
+        "This is a text to speech synthesis system built for the course project."
+    ],
+
+    "distributed": {
+        "backend": "gloo",
+        "url": "tcp:\/\/localhost:54321",
+        "nprocs": 1
+    },
+
+    "use_mps": true,
+
+    "model_args": {
+        "num_chars": 178,
+        "out_channels": 513,
+        "spec_segment_size": 32,
+        "hidden_channels": 192,
+        "hidden_channels_ffn_text_encoder": 768,
+        "num_heads_text_encoder": 2,
+        "num_layers_text_encoder": 6,
+        "kernel_size_text_encoder": 3,
+        "dropout_p_text_encoder": 0.1,
+        "hidden_channels_encoder": 192,
+        "kernel_size_encoder": 5,
+        "dilation_rate_encoder": 1,
+        "num_layers_encoder": 16,
+        "in_channels_encoder": 80,
+        "in_channels_flow_decoder": 192,
+        "hidden_channels_flow_decoder": 192,
+        "kernel_size_flow_decoder": 5,
+        "dilation_rate_flow_decoder": 1,
+        "num_layers_flow_decoder": 4,
+        "resblock_type_decoder": "1",
+        "resblock_dilation_sizes_decoder": [[1, 3, 5], [1, 3, 5], [1, 3, 5]],
+        "resblock_kernel_sizes_decoder": [3, 7, 11],
+        "upsample_rates_decoder": [8, 8, 2, 2],
+        "upsample_initial_channel_decoder": 512,
+        "upsample_kernel_sizes_decoder": [16, 16, 4, 4],
+        "use_spectral_norm_discriminator": false,
+        "base_pitch": 256,
+        "min_pitch": 1,
+        "max_pitch": 640
+    }
+}

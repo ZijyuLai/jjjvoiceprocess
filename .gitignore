@@ -1,0 +1,47 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.conda/
+*.egg-info/
+dist/
+build/
+
+# Data (too large, should be downloaded separately)
+data/
+*.tar.bz2
+*.tar.gz
+
+# Model checkpoints (too large, should be trained separately)
+models/vits_finetuned/phoneme_cache/
+*.pth
+*.pt
+
+# Node modules
+node_modules/
+package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs
+*.log
+logs/
+
+# Tensorboard
+events.out.tfevents.*
+
+# Temporary files
+tmp/
+temp/
