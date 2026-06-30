@@ -18,6 +18,7 @@ data/
 
 # Model checkpoints (too large, should be trained separately)
 models/vits_finetuned/phoneme_cache/
+models/vctk_finetuned/phoneme_cache/
 *.pth
 *.pt
 
