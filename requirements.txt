@@ -1,7 +1,10 @@
 # TTS System Requirements
 # Python 3.10
+#
+# Install PyTorch first (platform-specific):
+#   NVIDIA GPU (Windows/Linux): pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121
+#   Apple Silicon (macOS):      pip install torch torchaudio
 
-# PyTorch with MPS support (Apple Silicon)
 torch>=2.0.0
 torchaudio>=2.0.0
 

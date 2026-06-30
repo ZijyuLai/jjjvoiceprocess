@@ -42,7 +42,7 @@
     "datasets": [
         {
             "name": "ljspeech",
-            "path": "/Users/misuzu/General Workspace/jjjvoiceprocess/data/LJSpeech-1.1",
+            "path": "./data/LJSpeech-1.1",
             "meta_file_train": "metadata.csv",
             "meta_file_val": "metadata.csv",
             "formatter": "ljspeech",
@@ -50,7 +50,7 @@
         }
     ],
 
-    "output_path": "/Users/misuzu/General Workspace/jjjvoiceprocess/models",
+    "output_path": "./models",
 
     "save_step": 1000,
     "print_step": 50,
@@ -72,7 +72,7 @@
         "nprocs": 1
     },
 
-    "use_mps": true,
+    "use_mps": false,
 
     "model_args": {
         "num_chars": 178,

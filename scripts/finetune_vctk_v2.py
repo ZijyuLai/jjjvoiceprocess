@@ -25,17 +25,22 @@ from TTS.tts.utils.speakers import SpeakerManager
 from TTS.config.shared_configs import BaseDatasetConfig
 from trainer import Trainer, TrainerArgs
 
-# VCTK预训练模型路径
-VCTK_MODEL_DIR = Path.home() / "Library/Application Support/tts/tts_models--en--vctk--vits"
+# VCTK预训练模型路径 (自动适配平台)
+if sys.platform == "darwin":
+    VCTK_MODEL_DIR = Path.home() / "Library/Application Support/tts/tts_models--en--vctk--vits"
+elif sys.platform == "win32":
+    VCTK_MODEL_DIR = Path.home() / "AppData/Local/tts/tts_models--en--vctk--vits"
+else:
+    VCTK_MODEL_DIR = Path.home() / ".local/share/tts/tts_models--en--vctk--vits"
 
 
 def check_device():
-    if torch.backends.mps.is_available():
+    if torch.cuda.is_available():
+        print(f"Using CUDA: {torch.cuda.get_device_name(0)}")
+        return "cuda"
+    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
         print("Using Apple Silicon MPS acceleration")
         return "mps"
-    elif torch.cuda.is_available():
-        print("Using CUDA acceleration")
-        return "cuda"
     print("Using CPU")
     return "cpu"
 
@@ -190,9 +195,9 @@ def main():
 
     parser = argparse.ArgumentParser(description="VCTK -> LJSpeech Fine-tuning")
     parser.add_argument("--data_path", type=str,
-                        default="/Users/misuzu/General Workspace/jjjvoiceprocess/data/LJSpeech-1.1")
+                        default=str(project_root / "data" / "LJSpeech-1.1"))
     parser.add_argument("--output_path", type=str,
-                        default="/Users/misuzu/General Workspace/jjjvoiceprocess/models/vctk_finetuned")
+                        default=str(project_root / "models" / "vctk_finetuned"))
     parser.add_argument("--epochs", type=int, default=5)
     parser.add_argument("--batch_size", type=int, default=8)
     parser.add_argument("--learning_rate", type=float, default=0.00002)

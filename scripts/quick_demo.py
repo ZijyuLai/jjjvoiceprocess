@@ -19,12 +19,12 @@ from TTS.api import TTS
 
 def check_device():
     """Check available device"""
-    if torch.backends.mps.is_available():
+    if torch.cuda.is_available():
+        print(f"Using CUDA: {torch.cuda.get_device_name(0)}")
+        return "cuda"
+    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
         print("Using Apple Silicon MPS acceleration")
         return "mps"
-    elif torch.cuda.is_available():
-        print("Using CUDA acceleration")
-        return "cuda"
     print("Using CPU")
     return "cpu"
 
@@ -115,7 +115,7 @@ def main():
     parser.add_argument(
         "--output_dir",
         type=str,
-        default="/Users/misuzu/General Workspace/jjjvoiceprocess/outputs/demo",
+        default=str(project_root / "outputs" / "demo"),
         help="Output directory"
     )
     parser.add_argument(

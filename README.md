@@ -7,8 +7,8 @@
 ### 环境要求
 
 - Python 3.10
-- PyTorch 2.0+ (MPS/CUDA 支持)
-- macOS with Apple Silicon 或 Linux/Windows with NVIDIA GPU
+- PyTorch 2.0+ (CUDA/MPS 支持)
+- Linux/Windows with NVIDIA GPU 或 macOS with Apple Silicon
 
 ### 环境配置
 
@@ -17,24 +17,27 @@
 conda create -n tts python=3.10 -y
 conda activate tts
 
-# 安装 PyTorch (Apple Silicon)
-pip install torch torchaudio
+# 安装 PyTorch (NVIDIA GPU / Windows & Linux)
+pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121
 
-# 安装 PyTorch (NVIDIA GPU)
-# pip install torch torchaudio --index-url https://download.pytorch.org/whl/cu121
+# 安装 PyTorch (Apple Silicon / macOS)
+# pip install torch torchaudio
 
 # 安装依赖
 pip install -r requirements.txt
 
-# 安装 espeak-ng (macOS)
-brew install espeak-ng
-
-# 安装 espeak-ng (Linux)
-# sudo apt-get install espeak-ng
+# 安装 espeak-ng
+# macOS:   brew install espeak-ng
+# Linux:   sudo apt-get install espeak-ng
+# Windows: 下载安装 https://github.com/espeak-ng/espeak-ng/releases/latest
 
 # 禁用遥测（避免网络错误）
+# macOS/Linux:
 export TRAINER_TELEMETRY=0
 export COQUI_TELEMETRY=0
+# Windows PowerShell:
+# $env:TRAINER_TELEMETRY=0
+# $env:COQUI_TELEMETRY=0
 ```
 
 ### 项目结构
@@ -76,8 +79,12 @@ python scripts/quick_demo.py --text "Hello, this is a text to speech synthesis s
 #### 2. 下载 LJSpeech 数据集
 
 ```bash
+# macOS/Linux:
 chmod +x scripts/download_data.sh
 ./scripts/download_data.sh
+
+# Windows (PowerShell):
+# python -c "import urllib.request, tarfile, os; os.makedirs('data', exist_ok=True); urllib.request.urlretrieve('https://data.keithito.com/data/speech/LJSpeech-1.1.tar.bz2', 'data/LJSpeech-1.1.tar.bz2'); tarfile.open('data/LJSpeech-1.1.tar.bz2', 'r:bz2').extractall('data'); os.remove('data/LJSpeech-1.1.tar.bz2')"
 ```
 
 #### 3. 使用预训练模型生成语音
@@ -95,9 +102,10 @@ python scripts/quick_demo.py \
 #### 微调训练
 
 ```bash
-# 禁用遥测
+# 禁用遥测 (macOS/Linux)
 export TRAINER_TELEMETRY=0
 export COQUI_TELEMETRY=0
+# Windows PowerShell: $env:TRAINER_TELEMETRY=0; $env:COQUI_TELEMETRY=0
 
 # 运行VCTK微调
 python scripts/finetune_vctk_v2.py \

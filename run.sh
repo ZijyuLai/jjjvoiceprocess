@@ -1,9 +1,11 @@
 #!/bin/bash
 # TTS 课程大作业 - 一键运行脚本
+# NOTE: On Windows, use Git Bash to run this script, or run commands manually.
 
 set -e
 
-PROJECT_DIR="/Users/misuzu/General Workspace/jjjvoiceprocess"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$SCRIPT_DIR"
 DATA_DIR="$PROJECT_DIR/data"
 OUTPUT_DIR="$PROJECT_DIR/models/vits_finetuned"
 

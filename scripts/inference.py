@@ -24,10 +24,10 @@ from TTS.utils.audio import AudioProcessor
 
 def check_device():
     """Check available device"""
-    if torch.backends.mps.is_available():
-        return "mps"
-    elif torch.cuda.is_available():
+    if torch.cuda.is_available():
         return "cuda"
+    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+        return "mps"
     return "cpu"
 
 def load_model(model_path, config_path=None):
@@ -122,7 +122,7 @@ def main():
     parser.add_argument(
         "--output_dir",
         type=str,
-        default="/Users/misuzu/General Workspace/jjjvoiceprocess/outputs",
+        default=str(project_root / "outputs"),
         help="Output directory for generated audio"
     )
     parser.add_argument(

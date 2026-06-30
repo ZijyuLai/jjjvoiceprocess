@@ -25,10 +25,10 @@ from TTS.tts.utils.synthesis import synthesis
 
 
 def check_device():
-    if torch.backends.mps.is_available():
-        return "mps"
-    elif torch.cuda.is_available():
+    if torch.cuda.is_available():
         return "cuda"
+    elif hasattr(torch.backends, "mps") and torch.backends.mps.is_available():
+        return "mps"
     return "cpu"
 
 
@@ -132,21 +132,29 @@ def compare_models():
         "This is a text to speech system built for the course project.",
     ]
 
-    # 模型路径
-    pretrained_config = Path.home() / "Library/Application Support/tts/tts_models--en--vctk--vits/config.json"
-    pretrained_checkpoint = Path.home() / "Library/Application Support/tts/tts_models--en--vctk--vits/model_file.pth"
+    # 模型路径 (自动适配平台)
+    import sys
+    if sys.platform == "darwin":
+        vctk_model_dir = Path.home() / "Library/Application Support/tts/tts_models--en--vctk--vits"
+    elif sys.platform == "win32":
+        vctk_model_dir = Path.home() / "AppData/Local/tts/tts_models--en--vctk--vits"
+    else:
+        vctk_model_dir = Path.home() / ".local/share/tts/tts_models--en--vctk--vits"
 
-    finetuned_config = "/Users/misuzu/General Workspace/jjjvoiceprocess/models/vctk_finetuned/config.json"
+    pretrained_config = vctk_model_dir / "config.json"
+    pretrained_checkpoint = vctk_model_dir / "model_file.pth"
+
+    finetuned_config = str(project_root / "models" / "vctk_finetuned" / "config.json")
     finetuned_checkpoint = None  # 将在训练完成后设置
 
     # 查找最新的微调检查点
-    finetuned_dir = Path("/Users/misuzu/General Workspace/jjjvoiceprocess/models/vctk_finetuned")
+    finetuned_dir = project_root / "models" / "vctk_finetuned"
     if finetuned_dir.exists():
         checkpoints = sorted(finetuned_dir.glob("checkpoint_*.pth"))
         if checkpoints:
             finetuned_checkpoint = checkpoints[-1]
 
-    output_dir = "/Users/misuzu/General Workspace/jjjvoiceprocess/outputs/comparison"
+    output_dir = str(project_root / "outputs" / "comparison")
     os.makedirs(output_dir, exist_ok=True)
 
     device = check_device()
@@ -201,7 +209,7 @@ def compare_models():
     print("=" * 60)
 
     # 使用LJSpeech的真实音频作为参考
-    ljspeech_dir = "/Users/misuzu/General Workspace/jjjvoiceprocess/data/LJSpeech-1.1/wavs"
+    ljspeech_dir = str(project_root / "data" / "LJSpeech-1.1" / "wavs")
     ref_files = sorted(Path(ljspeech_dir).glob("*.wav"))[:3]
 
     for i, ref_file in enumerate(ref_files):
